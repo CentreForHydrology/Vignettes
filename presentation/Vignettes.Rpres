@@ -1,0 +1,357 @@
+Creating documents (including vignettes) in R
+========================================================
+author: Kevin Shook
+date: April 26, 2018
+
+Why create documents in R?
+========================================================
+- Allows you to distribute your work to others
+- Makes your work reproducible
+  - combines code (and output) with text
+  - allows detailed explanation of the code and the results
+  - document will always contain up-to-date values
+
+
+R document types
+========================================================
+R can be used to create 
+- Notebooks
+- Slide presentations
+- Documentation (vignettes)
+- Books
+- Web apps
+
+
+R document components
+========================================================
+Can include any of:
+ - text (with formatting)
+  - equations
+ - *live* **R** code
+   - code is executed and output will be shown
+ - figures
+  - can be static images or **R** plots
+
+
+Creating R documents
+========================================================
+- Write plain text using R Markdown
+  - text markup language
+  - simpler than LaTex (can also use LaTex)
+  - see https://rmarkdown.rstudio.com/ for more info
+  - reference at https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf
+- Because R Markdown files are pure text files (extension .Rmd) they can be used in a 
+version control system (like git)
+- Output can be distributed to non-R users
+
+
+Output formats
+========================================================
+- html
+- pdf
+- Word (.docx)
+
+  
+Required packages
+=======================================================
+- Install packages **rmarkdown** and  **devtools** 
+- Will install *several* other packages
+  - **knitr** is the most important - creates the output
+  - installation is slow, but only needs to be done once  
+- Need LaTex installed if you use equations or to output .pdf files
+https://www.latex-project.org/get/
+- Need Pandoc installed to convert output to Word
+http://pandoc.org
+
+R Markdown
+========================================================
+- All documents, regardless of type or output format use same formatting
+- R Studio has built-in cheat sheets
+- Command is **Help|Cheatsheets**
+
+***
+
+![](cheatsheets.png)
+
+R Markdown formatting
+========================================================
+
+
+Text
+========================================================
+- All text is in paragraphs, even if you manually break the line
+- To force a line break, put 2 spaces at the end of a line
+
+This is an example  
+of how to break text
+
+Emphasis
+========================================================
+- put asterisks or underscores before and after text to emphasize it
+ - * italics * -> *italics*
+ - ** bold ** -> **bold** 
+
+
+Titles
+========================================================
+- Titles indicated using leading ```#``` symbols
+
+`# Header 1
+# Header 1
+`## Header 2
+## Header 2
+***
+`### Header 3 
+### Header 3 
+
+Bullets
+========================================================
+- Each bullet is prefixed by a hyphen
+  - indent using tab or 2 spaces
+  
+Images
+========================================================
+- Use command  
+`!`[`optional text`]`(`filename`)`
+
+Code
+=======================================================
+- If you just want text to be displayed as code, put 
+it between single back ticks:
+`` ` `` meanvals <- mean(df$temps) `` ` ```
+will display as  
+
+`meanvals <- mean(df$temps)`
+
+Inline R code
+=======================================================
+- To make **R** code executable, put it between back ticks following "r":
+
+Example:
+
+There were `` ` `` r nrow(cars)`` ` `` cars studied
+ 
+Will produce:
+
+There were `r nrow(cars)` cars studied
+
+R code chunks
+=======================================================
+- R code can be placed in chunks of multiple lines
+- Each chunk can be executed separately
+- Insert a new chunk by pressing **[Ctrl][Alt][i]**
+
+
+Running a chunk
+=======================================================
+- Click on the green triangle to run
+- Click on the gear to set options
+<div align="left">
+<img src="run_chunk.png" width=1000>
+</div>
+
+```{r echo=FALSE}
+  a <- seq(1:10)
+  cat(a)
+```
+
+LaTex
+======================================================
+- Equations can be added by enclosing them with $ 
+- Use ``$$`` to centre equation on the line
+
+`` $$\frac{\alpha}{\beta} = \gamma$$ ``
+
+$$\frac{\alpha}{\beta} = \gamma$$
+
+Tables
+=====================================================
+- Create a table using pipes (|) and hyphens  
+``header1|header2``  
+``-------|-------``  
+``row1|row1``  
+``row2|row2``  
+
+header1|header2
+-------|-------
+row1|row1
+row2|row2
+
+
+Formatting R output
+=====================================================
+- Many **R** commands produce tables of output
+  - work well for mono spaced text
+  - not optimized for proportionally-spaced text
+  - doesn't work well when the lines are long
+```{r}
+head(mtcars, 4)
+```
+
+Using other packages
+====================================================
+- Function **`knitr::kable()`** automatically tidies data frames
+```{r}
+knitr::kable(head(mtcars, 4))
+```
+
+pander
+===================================================
+- Another package
+- Useful for outputting results of functions like `lm()` which produce tabular 
+output which is not in a data frame
+- Very easy to use, will see an example
+- Requires pandoc
+
+
+Types of documents
+====================================================
+
+
+Notebooks
+====================================================
+- Used to show a piece of R work
+  - useful for documenting what you have done
+  - makes your work reproducible
+- If your code is written in functions, the notebook documents the function calls 
+(including the parameter values)
+
+Example notebook
+====================================================
+- Use **File|New File|Notebook**
+- Creates a skeleton document 
+- Default output is html, can be changed
+
+
+Slide presentations
+====================================================
+- You can create 2 types of presentations:
+ 1. **.Rpres** presentations
+ 2. **.Rmd** presentations
+- *Very* useful for **R** training
+
+.Rpres presentations
+====================================================
+- This presentation is an example
+- Stored in file with extension .Rpres
+  - Requires R Studio (or a browser) to view
+- To create a presentation, use **File|New File|R Presentation**
+- Each slide has a title line with at least 3 equals signs underneath:  
+
+Slide title  
+`====================================================
+
+.Rmd presentations
+====================================================
+- Can produce more sophisticated slides
+- To create a presentation, use **File|New File|R Markdown**
+  - Click on "Presentation" and select one of the 3 types
+
+***
+![](presentation.png)
+
+Bookdown
+=====================================================
+- Can create books (printed or eBooks) in R
+- Get package **bookdown**
+- Books can be in PDF, LaTeX, HTML, EPUB, or Word
+- eBooks can also be published to web: https://bookdown.org
+
+Writing the document
+=======================================================
+- Create the template document
+- Modify the template with your text and R code chunks  
+- Test each chunk  
+- To see how the document looks, build it by clicking on the **knit** button
+
+<div align="center">
+<img src="knit.png" width=300 >
+</div>
+
+Example of a notebook
+====================================================
+
+
+
+Vignettes
+====================================================
+- R package documentation can include **vignettes**
+  - long form documentation, written in Markdown
+- A great way to contribute to an R package
+  - a great way to learn about R packages
+
+  
+Creating a Vignette
+=====================================================
+- Create vignette from a template  
+  - command is **File|New File|R Markdown...**
+    - select **From Template**, then **Package Vignette (HTML)**
+  - creates a folder called `\vignettes`
+  - also creates an un-named vignette file
+    - you need to change the `title`, `author` and `VignetteIndexEntry` in the vignette file header
+
+
+Vignette template header
+======================================================
+```
+---
+title: "Vignette Title"
+author: "Vignette Author"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+```  
+
+First R chunk in vignette
+=======================================================
+The first R chunk sets up the R code options
+```
+{r setup, include = FALSE }
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+- need to `include` the package and any other packages used in the vignette
+
+Figure sizes
+========================================================
+- The default figure size allows 2 figures to be side-by side
+  - makes them a bit squished
+- You can change the figure size in the chunk header:
+
+```
+{r, fig.width = 5, fig.height = 3}
+```
+- Don't make the figures too wide or they won't display well in the help window.
+
+Vignette example
+======================================================
+
+
+Building the vignette
+======================================================
+- Set Roxygen to generate the vignette  
+![](vignette1.png)  
+- When you Clean & Rebuild the package, the vignette files will be created
+
+Adding the vignette to the package
+=======================================================
+- The vignette files have to be added to a sub directory
+`\inst\doc`
+- As this is not done by building, you will have to manually do it with the command  
+`devtools::build_vignettes()`
+  - once the vignettes are built, _then_ you will have to Clean & Rebuild the package as usual
+  
+Documenting hydRology functions
+========================================================
+- Recommend the use of R notebooks for documenting functions under development
+  - the .Rmd files contain all of the code, and can be executed by the programmer
+- Shows the use of the function with examples and explanations
+  - A great way for documenting and demonstrating bugs to the programmers
+- As the bugs are squashed, the notebooks can easily be converted to vignettes
+  
